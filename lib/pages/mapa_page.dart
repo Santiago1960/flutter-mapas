@@ -36,9 +36,10 @@ class _MapaPageState extends State<MapaPage> {
               return const Text( 'Obteniendo Ubicación...' );
             }
             final mapaBloc = BlocProvider.of<MapaBloc>(context);
+            mapaBloc.add( OnNuevaUbicacion( state.ubicacion! ) );
             final cameraPosition = CameraPosition(
               target: state.ubicacion!,
-              zoom: 15,tilt: 10
+              zoom: 15,
             );
             return GoogleMap(
               initialCameraPosition: cameraPosition,
@@ -47,6 +48,10 @@ class _MapaPageState extends State<MapaPage> {
               compassEnabled: false,
               zoomControlsEnabled: false,
               onMapCreated: mapaBloc.initMapa,
+              polylines: mapaBloc.state.polylines.values.toSet(),
+              /* onCameraMove: ( cameraPosition) {
+                mapaBloc.add( OnMovioMapa( cameraPosition.target ) );
+              }, */
             );
           },
         )
@@ -55,8 +60,11 @@ class _MapaPageState extends State<MapaPage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: const [
           BtnUbicacion(),
+          BtnSeguirUbicacion(),
+          BtnMiRuta(),
         ],
       ),
     );
   }
+
 }

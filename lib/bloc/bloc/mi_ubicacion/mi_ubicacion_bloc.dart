@@ -9,6 +9,9 @@ part 'mi_ubicacion_event.dart';
 part 'mi_ubicacion_state.dart';
 
 class MiUbicacionBloc extends Bloc<MiUbicacionEvent, MiUbicacionState> {
+
+  get siguiendo => true;
+
   MiUbicacionBloc() : super(const MiUbicacionState()) {
 
 
@@ -49,12 +52,10 @@ class MiUbicacionBloc extends Bloc<MiUbicacionEvent, MiUbicacionState> {
 
   StreamSubscription<Position>? _positionSubscription;
 
-  get siguiendo => true;
-
   void iniciarSeguimiento() {
     _positionSubscription = Geolocator.getPositionStream(
       desiredAccuracy: LocationAccuracy.bestForNavigation,
-      distanceFilter: 20
+      distanceFilter: 10
     ).listen(( Position position ) {
       final nuevaUbicacion = LatLng( position.latitude, position.longitude );
       add( OnUbicacionCambio( nuevaUbicacion ) );
